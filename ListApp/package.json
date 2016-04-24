@@ -1,0 +1,29 @@
+{
+  "name": "itc298_list",
+  "version": "1.0.0",
+  "description": "an application with recipes and lists of ingredients",
+  "main": "recipes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbarke05/itc298-s16.git"
+  },
+  "keywords": [
+    "shopping",
+    "groceries",
+    "recipes"
+  ],
+  "author": "kristie.barker",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "handlebars": "^4.0.5"
+  }
+  "bugs": {
+    "url": "https://github.com/kbarke05/itc298-s16/issues"
+  },
+  "homepage": "https://github.com/kbarke05/itc298-s16#readme"
+}
