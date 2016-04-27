@@ -14,12 +14,6 @@ app.get('/', function(req, res) {
         res.render('home', { recipe: randomRecipe });
 });
 
-app.get('/search', function(req, res){
-        var randomRecipe =
-                recipes[Math.floor(Math.random() * recipes.length)];
-        res.render('search', { recipe: randomRecipe });
-});
-
 app.listen(app.get('port'), function(){
   console.log( 'Express started on http://localhost:' +
     app.get('port') + '; press Ctrl-C to terminate.' );
@@ -36,32 +30,47 @@ app.set('view engine', 'handlebars');
 
 
 
-var recipes =
-        ["Chicken fajitas",
-        "Quinoa salad",
-        "Salmon with pesto pasta",
-        "Greek pita"];
+var recipes = [
+
+{ name:'chicken fajitas', main:'chicken' },
+
+{ name:'greek pita', main:'olives' },
+
+{ name:'quinoa salad', main:'quinoa' }
+
+];
 
 
 
-app.post('/search', function(req, res){
-  
-//var input = document.querySelectorAll('[name=recipes]');
-
-var recipe = {title:"Chicken fajitas", mainIngredient:"chicken"};  
-
+    
+app.post('/search', function(req,res){
+ res.type('text/html');
+ var search_term = req.body.recipes;
+ console.log("searching for " + search_term);
  
- if(recipes.value==recipe.title){
+var found = recipes.find(function(item){
+     console.log(item.name);
+     return item.name == search_term;
+    
+ });
+ 
+ 
+ 
+ if(found){
    
-   res.send ("The main ingredient of your recipe is ");
-    return true;
+   res.send ("The main ingredient of " + found.name + ' is '  + found.main);
+    
    
  }else{
    
    res.send("No match found.");
-    return false;
+   
  }
- 
-                       
-            
+
 });
+
+
+
+
+ 
+                     
