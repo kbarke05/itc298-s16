@@ -1,13 +1,11 @@
+
+
 <h1>Home Page!</h1>
 
-<p>Your recipe for the day:</p>
-<blockquote>{{recipe}}</blockquote>
 
-
-
-<div id="search">
-<form method="POST" action="search" name="form">                   
-<input type="text" name="recipes" maxlength="50" id="searchfield" title="searchfield" value="type your recipe here."/>
-<input type="submit" name="button" value="Search" alt="Search" id="searchbutton" title="Search" />
+<form method="POST"  action="/search">                   
+<input type="text" name="recipes" maxlength="50" placeholder="search recipe"/>
+<button>Search</button>
 </form>
-</div>
+
+
