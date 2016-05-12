@@ -28,6 +28,24 @@ return recipes.find(function(item){
  
 }
 
+exports.add = function(newRecipe){
+     recipes.push(newRecipe);
+     var newItem = {added:true, length: recipes.length};
+     return newItem;
+}
+
+exports.delete = function(name){
+     var isDeleted = false;
+     for (var i= 0; i < recipes.length; i++){
+         var recipe = recipes[i];
+          if(recipe.name == name){
+               isDeleted = true;
+               recipes.splice(i, 1);
+          }
+     }
+     var deletedItem = {deleted:isDeleted, length: recipes.length};
+     return deletedItem;
+}
 
  
 

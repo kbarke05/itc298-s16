@@ -1,17 +1,35 @@
-
+<html>
+ <head>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+ </head>
     
 <body>
 <h1>Home Page!</h1>
 
-<form method="POST"  action="/search">                   
-<input type="text" name="recipes" maxlength="50" placeholder="recipe name">
-<input type="text" name="main" maxlength="100" placeholder="main ingredient" >
-<input type="text" name="time" maxlength="50" placeholder="time" >
-<button>Search</button>
-<button>Add</button>
-<button>Delete</button>
+<form method="POST"  id="formId" action="/search">                   
+    <input type="text" name="recipes" maxlength="50" placeholder="recipe name">
+    <input type="text" name="main" maxlength="100" placeholder="main ingredient" >
+    <input type="text" name="time" maxlength="50" placeholder="time" >
+    <button>Search</button>
+    <button id="1">Add</button>
+    <button id="2">Delete</button>
 </form>
 </body>
+
+<script>
+    $(document).ready(function() {
+    
+         $('#1').click(function(){
+            $('#formId').attr('action', 'add');
+        });
+    
+        $('#2').click(function(){
+            $('#formId').attr('action', 'delete');
+        });
+    })
+
+   
+</script>
 
 
 

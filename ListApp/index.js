@@ -29,21 +29,42 @@ var recipes = require('./lib/recipes.js');
 
 
 app.post('/search', function(req,res){
-res.type('text/html');
-var search_term = req.body.recipes;
-var found = recipes.find(search_term);
+    res.type('text/html');
+    var search_term = req.body.recipes;
+    var found = recipes.find(search_term);
 
- 
-if(found){
-   
-   res.send ("The main ingredient of " + found.name + ' is '  + found.main + " and it takes " + found.time + " minutes to make.");
-    
-   
- }else{
-   
-   res.send("No match found.");
-   
- }   
+
+    if(found){
+       
+       res.send ("The main ingredient of " + found.name + ' is '  + found.main + " and it takes " + found.time + " minutes to make.");
+        
+       
+     }else{
+       
+       res.send("No match found.");
+       
+     }   
+});
+
+app.post('/add', function(req,res){
+    res.type('text/html');
+    var newRecipe = {"name":req.body.recipes, "main":req.body.main, "time":req.body.time};
+    var result = recipes.add(newRecipe);
+    if (result.added) {
+        res.send("Added: " + req.body.recipes + "<br>New recipe = " + result.length);
+    } else {
+        res.send("Updated: " + req.body.recipes);
+    }
+});
+
+app.post('/delete', function(req,res){
+    res.type('text/html');
+    var result = recipes.delete(req.body.recipes);
+    if (result.deleted) {
+        res.send("Deleted: " +  req.body.recipes + '<br>New recipe = ' + result.length);
+    } else {
+        res.send(req.body.recipes + " not found");
+    }
 });
 
 
