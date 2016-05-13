@@ -47,6 +47,23 @@ exports.delete = function(name){
      return deletedItem;
 }
 
+exports.update = function(name, main, time, originalName){
+     var isUpdated = false;
+     for (var i= 0; i < recipes.length; i++){
+         var recipe = recipes[i];
+          if(recipe.name == originalName){
+               isUpdated = true;
+               recipe.name = name;
+               recipe.main = main;
+               recipe.time = time;
+          }
+     }
+     var updatedItem = {updated:isUpdated, length: recipes.length};
+     return updatedItem;
+}
+
+
+
  
 
 

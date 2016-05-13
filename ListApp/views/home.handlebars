@@ -1,38 +1,66 @@
-<html>
- <head>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
- </head>
-    
-<body>
-<h1>Home Page!</h1>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+<h2>Recipes Home Page</h2>
 
 <form method="POST"  id="formId" action="/search">                   
-    <input type="text" name="recipes" maxlength="50" placeholder="recipe name">
+    <input type="text" name="name" maxlength="50" placeholder="recipe name">
     <input type="text" name="main" maxlength="100" placeholder="main ingredient" >
     <input type="text" name="time" maxlength="50" placeholder="time" >
     <button>Search</button>
     <button id="1">Add</button>
     <button id="2">Delete</button>
 </form>
-</body>
+
+<hr>
+<table>
+    <tr>
+        <th>name</th>
+        <th>main</th>
+        <th>time</th>
+    </tr>    
+{{#each recipes}}
+    {{#if name}}
+        <tr onclick="javascript:editRecipe(this);">
+            <td>{{name}}</td>
+            <td>{{main}}</td>
+            <td>{{time}}</td>
+        </tr>
+    {{/if}}
+{{/each}}
+</table>
 
 <script>
     $(document).ready(function() {
-    
          $('#1').click(function(){
             $('#formId').attr('action', 'add');
         });
-    
         $('#2').click(function(){
             $('#formId').attr('action', 'delete');
         });
     })
-
-   
 </script>
 
-
-
-
-
+<script>
+    $(document).ready(function(){
+        var buttons = $('button');
+        
+        buttons.on('click', function() {
+            var $this = $(this);
+            var action = $this.text().toLowerCase();
+            if (action == 'new lead') {
+                event.preventDefault();
+                location.href = "/detail/" + $("input:text[name=company]").val();
+            } else {
+                $("form").attr("action", "/" + action);
+            }
+        });
+    });
+    
+    function editRecipe(row) {
+        var name = $(row).children().first().text();
+        location.href = "/detail/" + name;
+    }
+    
+</script>
+</body>
 

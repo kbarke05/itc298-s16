@@ -1,0 +1,34 @@
+<html>
+ <head>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+ </head>
+    
+<body>
+<h1>Detail Page!</h1>
+
+<form method="POST"  id = "formId" action="/update">
+    <input type="text" name="name" placeholder="name" value="{{name}}" required maxlength="100">
+    <input type="text" name="main" placeholder="main" value="{{main}}" maxlength="100">
+    <input type="text" name="time" placeholder="time"  value="{{time}}"maxlength="100">
+    <input type="hidden" name="originalName" value="{{name}}">
+    <button>Update</button>
+    <button id="2">Delete</button>
+</form>
+</body>
+
+<script>
+    $(document).ready(function() {
+    
+        $('#2').click(function(){
+            $('#formId').attr('action', 'delete');
+        });
+    })
+
+   
+</script>
+
+
+
+
+
+

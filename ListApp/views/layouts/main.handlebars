@@ -4,6 +4,13 @@
     <title>ITC298 LIST</title>
 </head>
 <body>
+    <header>Recipes List</header>
     {{{body}}}
+    <div class="nav">
+     {{! only show home link if on detail page }}
+     {{#if detail}}<a href="/">Home</a> |{{/if}} 
+     <a href="/about">About</a> |
+     <a href="/detail">Detail</a></div>
+     <footer>&copy; Kristie Barker</footer>
 </body>
 </html>
