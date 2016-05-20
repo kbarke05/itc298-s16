@@ -19,7 +19,7 @@ app.get('/detail/:id', function(req, res) {
 });
 app.post('/search', function(req,res){
     res.type('text/html');
-    var search_term = req.body.recipes;
+    var search_term = req.body.name;
     var found = recipes.find(search_term);
 
 
@@ -68,9 +68,9 @@ app.post('/update', function(req,res){
     
     // API routes
     app.get('/api/recipes', function(req,res) {
-        var recipes = recipes.get();
-        if (recipes) {
-            res.json(recipes);    
+        var ourRecipes = recipes.get();
+        if (ourRecipes) {
+            res.json(ourRecipes);    
         } else {
             res.status(404).send("404 - no recipes found");    
         }
