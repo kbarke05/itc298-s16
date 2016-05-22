@@ -4,8 +4,10 @@ module.exports = function(app) {
     // UI routes
     
 app.get('/', function(req, res) {
-    var ourRecipes = recipes.get();    
-    res.render('home', {'recipes' :ourRecipes});
+    var ourRecipes = recipes.get(function(ourRecipes) {
+        res.render('home', {'recipes' :ourRecipes});
+    });    
+    
 });
 
 app.get('/about', function(req, res) {
@@ -14,56 +16,64 @@ app.get('/about', function(req, res) {
 
 app.get('/detail/:id', function(req, res) {
     var name = req.params.id;
-    var ourRecipe = recipes.find(name);
-    res.render('detail', {detail:true, name:ourRecipe.name, main:ourRecipe.main, time:ourRecipe.time} );
+    recipes.find(name, function(ourRecipe){
+        
+    res.render('detail', {detail:true, name:ourRecipe.name, main:ourRecipe.main, time:ourRecipe.time} );    
+        
+    });
 });
+
 app.post('/search', function(req,res){
     res.type('text/html');
     var search_term = req.body.name;
-    var found = recipes.find(search_term);
-
-
-    if(found){
-       
-       res.send ("The main ingredient of " + found.name + ' is '  + found.main + " and it takes " + found.time + " minutes to make.");
-        
-       
+    recipes.find(search_term, function(ourRecipe) {
+      
+      if(ourRecipe){
+       res.send ("The main ingredient of " + ourRecipe.name + ' is '  + ourRecipe.main + " and it takes " + ourRecipe.time + " minutes to make.");
      }else{
-       
        res.send("No match found.");
-       
-     }   
+     } 
+     
+    });
+
+      
 });
 
 app.post('/add', function(req,res){
     res.type('text/html');
     var newRecipe = {"name":req.body.name, "main":req.body.main, "time":req.body.time};
-    var result = recipes.add(newRecipe);
-    if (result.added) {
-        res.send("Added: " + req.body.name + "<br>New recipe = " + result.length);
+    recipes.add(newRecipe, function(newRecipe){
+       if (newRecipe.added) {
+        res.send("Added: " + req.body.name + "<br>New recipe = " + newRecipe.name);
     } else {
         res.send("Updated: " + req.body.name);
-    }
+    } 
+    });
+    
 });
 
 app.post('/delete', function(req,res){
     res.type('text/html');
-    var result = recipes.delete(req.body.name);
-    if (result.deleted) {
-        res.send("Deleted: " +  req.body.name + '<br>New recipe = ' + result.length);
+    recipes.delete(req.body.name, function(result){
+       if (result.deleted) {
+        res.send("Deleted: " +  req.body.name + '<br>New recipe = ' + result.name);
     } else {
         res.send(req.body.name + " not found");
-    }
+    } 
+    });
+    
 });
 
 app.post('/update', function(req,res){
     res.type('text/html');
-    var result = recipes.update(req.body.name, req.body.main, req.body.time, req.body.originalName);
-    if (result.updated) {
-        res.send("Updated: " +  req.body.name + '<br>New recipe = ' + result.length);
-    } else {
-        res.send(req.body.name + " not found");
-    }
+    recipes.update(req.body.name, req.body.main, req.body.time, req.body.originalName, function(result){
+        if (result.updated) {
+            res.send("Updated: " +  req.body.name + '<br>New recipe = ' + result.name);
+        } else {
+            res.send(req.body.name + " not found");
+        } 
+    });
+   
 });
     
     // API routes

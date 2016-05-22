@@ -17,13 +17,14 @@
         <th>name</th>
         <th>main</th>
         <th>time</th>
-    </tr>    
+    </tr>
+    
 {{#each recipes}}
-    {{#if name}}
+    {{#if this.name}}
         <tr onclick="javascript:editRecipe(this);">
-            <td>{{name}}</td>
-            <td>{{main}}</td>
-            <td>{{time}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.main}}</td>
+            <td>{{this.time}}</td>
         </tr>
     {{/if}}
 {{/each}}
