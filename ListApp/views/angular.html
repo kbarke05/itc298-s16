@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+<script>
+ var listApp = angular.module('listApp',[]);
+ listApp.controller('ListController', ['$scope', function($scope) {
+ $scope.mydata = ["cat", "dog", "goat", "fish" ];
+
+ var myInformation = ["I say meow", "I say woof", "I say bah", "I say bubble"];
+
+ // sample method
+ $scope.myMethod = function(i) { 
+  var thisInformation = myInformation[i];
+  $scope.message = thisInformation;
+ };
+ }]);
+</script>
+
+<!--View template. Add necessary Angular directives -->
+<body ng-app="listApp">
+<div ng-controller="ListController">
+ <p>Search : <input type="text" ng-model="search"></p>
+
+<b>Search term: {{search}}</b>
+<br>
+Did you say <span ng-bind="search"></span>?
+<br>
+<p>My array items: <span ng-repeat="x in mydata"><button ng-click="myMethod($index)">{{x}}</button></span></p>
+<p>Array total: {{mydata.length}}</p>
+<b>{{message}}</b>
+
+
+
+</div>
+</body>
+</html>
