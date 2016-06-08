@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Recipe Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  </head>
+
+<script>
+
+    var listApp = angular.module('listApp',[]);
+    listApp.controller('listController', function($scope, $http) {
+      
+    $http.get('/api/recipes')
+      .then(function successCallback(response) {
+            $scope.recipes = response.data;
+      }, function errorCallback(response) {
+        console.log('Error: ' + response.data);
+      });
+  
+    // control display of detail form
+    $scope.hideform = true;
+
+      // reset form
+      $scope.showDetail = function(item) { 
+        $scope.add = false;
+        $scope.hideform = (item == $scope.recipes) ? !$scope.hideform : false; 
+        $scope.recipes = item;
+        //$scope.close_date = new Date($scope.lead.close_date);
+      };
+      
+      $scope.newRecipe = function() { 
+        $scope.add = true;
+        $scope.hideform = false; 
+        $scope.recipes = {};
+      };
+
+      $scope.saveRecipe = function() { 
+        $http.post('/api/add', $scope.recipes)
+        .then(function successCallback(response) {
+            $scope.post_result = response.data;
+        }, function errorCallback(response) {
+          console.log('Error: ' + response.data);
+        });
+      };
+      
+      $scope.deleteRecipe = function() { 
+        $http.post('/api/delete', $scope.recipes)
+        .then(function successCallback(response) {
+            $scope.post_result = response.data;
+        }, function errorCallback(response) {
+          console.log('Error: ' + response.data);
+        });
+      };
+    });
+</script>
+<body ng-app="listApp">
+      <header>Recipe Page</header>
+
+<div ng-controller="listController" class="container-fluid">
+  <div class="row">
+    <div class="sidebar col-sm-4">
+     	<p>Search : <input type="text" ng-model="search_term"></p>
+     	<table>
+     	    <tr>
+     	        <th>Name</th>
+     	        <th>Main</th>
+     	        <th>Time</th>
+     	    </tr>
+          <tr ng-repeat="recipes in recipes | orderBy : 'name' | filter: search_term ">
+            <td><a ng-click="showDetail(recipes)">{{ recipes.name }}</a></td>
+            <td>{{ recipes.main }}</td>
+            <td>{{ recipes.time }}</td>
+          </tr>
+        </table>
+          <p><button ng-click="newRecipe()">New</button></p>
+          <hr>
+    </div>
+    <div class="detail-container col-sm-8">
+
+<form ng-hide="hideform">
+  <h3 ng-show="add">Add Item:</h3>
+  <h3 ng-hide="add">Edit Item:</h3>
+  <h3 ng-bind="post_result"></h3>
+    <input type="text" placeholder="name" ng-model="recipes.name" required maxlength="100">
+    <input type="text" placeholder="main" ng-model="recipes.main" maxlength="100">
+    <input type="text" placeholder="time" ng-model="recipes.time" maxlength="100">
+    <input type="hidden" name="id" ng-model="recipes._id" >
+    <br><button ng-click="saveRecipe()">Save</button></p>
+    <br><button ng-click="deleteRecipe()">Delete</button></p>
+  </span> 
+  </form>
+          </div><!-- end detail-container column-->
+      </div><!--end row-->
+      <div class="nav">
+    <footer>&copy; Kristie Barker</footer
+  </div><!-- end container-fluid-->
+
+</body>
+</html>

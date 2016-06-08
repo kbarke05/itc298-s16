@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>
+ var myApp = angular.module('myApp',[]);
+ myApp.controller('AppController', function($scope, $http) {
+ $scope.mydata = [];
+ 
+ $scope.master = true;
+
+ var getRecipes = function() {
+     $http.get('/api/recipes').then(function successCallback(response) {
+         console.log(response);
+        // update list of recipes in $scope
+        $scope.recipes = response.data;
+      }, function errorCallback(response) {
+          console.log(response);
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+      });
+ }
+ getRecipes();
+ 
+ var myInformation = [];
+
+ $scope.editRecipe = function(recipe) { 
+  // update scope variable for currently selected recipe
+  $scope.recipe = recipe;
+
+  $scope.master = false;
+  $scope.name = recipe.name;
+  $scope.main = recipe.main;
+  $scope.time = recipe.time;
+ };
+ 
+  $scope.findRecipe = function() { 
+    var name = $('#name').val();
+    var data = {
+            name: name
+    }
+    $http.post('/api/search/', data).then(function successCallback(response) {
+     console.log(response);
+    $scope.search = response.data.message;
+  }, function errorCallback(response) {
+      console.log(response);
+    $scope.search = response.data.message;
+    // called asynchronously if an error occurs
+    // or server returns response with an error status.
+  });
+    
+ };
+ 
+ $scope.addRecipe = function() { 
+    var name = $('#name').val();
+    var main = $('#main').val();
+    var time = $('#time').val();
+    var data = {
+            name: name,
+            main: main,
+            time: time
+    }
+    $http.post('/api/add/', data).then(function successCallback(response) {
+     console.log(response);
+    // update list of recipes in $scope
+    $scope.message = response.data.message;
+    getRecipes();
+  }, function errorCallback(response) {
+      console.log(response);
+    $scope.message = response.data.message;
+    // called asynchronously if an error occurs
+    // or server returns response with an error status.
+  });
+    
+ };
+ 
+  $scope.deleteRecipe = function() { 
+    var name = $('#name').val();
+    var data = {
+            name: name
+    }
+    $http.post('/api/delete/', data).then(function successCallback(response) {
+     console.log(response);
+    $scope.message = response.data.message;
+    getRecipes();
+  }, function errorCallback(response) {
+      console.log(response);
+    $scope.message = response.data.message;
+   
+  });
+  
+} 
+  
+   $scope.updateRecipe = function() { 
+    // var name = $('#name').val();
+    // var main = $('#main').val();
+    // var time = $('#time').val();
+    var originalName = $('#originalName').val();
+    // var data = {
+    //         name: name,
+    //         main: main,
+    //         time: time,
+    //         originalName: originalName
+    // }
+    console.log($scope.recipe);
+    $http.post('/api/update/', $scope.recipe).then(function successCallback(response) {
+     console.log(response);
+    // update list of recipes in $scope
+    $scope.message = response.data.message;
+  }, function errorCallback(response) {
+      console.log(response);
+    $scope.message = response.data.message;
+    // called asynchronously if an error occurs
+    // or server returns response with an error status.
+  });
+    
+ };
+ 
+  }); 
+  
+  
+
+</script>
+
+<!--View template. Add necessary Angular directives -->
+<body ng-app="myApp">
+<div ng-controller="AppController">
+    
+<div id="master" ng-show="master">   
+    <h2>Recipes Home Page</h2>
+    <hr>
+    <h2>Search section</h2>
+        {{search}}
+    <hr>
+    <form method="POST"  id="formId">                   
+        <input type="text" id="name" name="name" maxlength="50" placeholder="recipe name">
+        <input type="text" id="main" name="main" maxlength="100" placeholder="main ingredient" >
+        <input type="text" id="time" name="time" maxlength="50" placeholder="time" >
+        <button type="button" ng-click="findRecipe()">Search</button>
+        <button id="1" ng-click="addRecipe()">Add</button>
+        <button id="2" ng-click="deleteRecipe()">Delete</button>
+    </form>
+    
+    {{message}}
+    
+    <hr>
+    <table>
+        <tr>
+            <th>name</th>
+            <th>main</th>
+            <th>time</th>
+        </tr>
+    <tr ng-repeat="x in recipes">
+        <td><a style="cursor: pointer" ng-click="editRecipe(x)">{{x.name}}</a></td>
+        <td>{{x.main}}</td>
+        <td>{{x.time}}</td>
+    </tr>   
+    </table> 
+
+</div><!--end master-->
+
+<div id="detail" ng-show="!master">
+     <h1>Detail Pages!</h1>
+
+    <form method="POST"  id="formId">
+        <!-- bind data model values to form fields -->
+        <input type="text" placeholder="name" ng-model="recipe.name" required maxlength="100">
+        <input type="text" id="main" name="main" placeholder="main" value="{{main}}" maxlength="100">
+        <input type="text" id="time" name="time" placeholder="time"  value="{{time}}"maxlength="100">
+        <input type="hidden" id="originalName" name="originalName" value="{{name}}">
+        <button type="button" ng-click="updateRecipe()">Update</button>
+        <button type="button" id="2" ng-click="deleteRecipe()">Delete</button>
+    </form>  
+    
+    {{message}}
+    
+    
+</div><!--end detail-->
+</div>
+</body>
+</html>

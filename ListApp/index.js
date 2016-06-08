@@ -19,7 +19,7 @@ var connection_string =  'mongodb://kristie:helloWorld@ds036069.mlab.com:36069/i
 
 var mongooseUri = require('mongodb-uri').formatMongoose(connection_string);
 
-mongoose.connect(mongooseUri);
+mongoose.connect(mongooseUri); 
 var db = mongoose.connection;
 
 // stuff for the db
@@ -32,8 +32,8 @@ app.use( function(req, res, next) {
 // set up handlebars view engine
 var handlebars = require('express-handlebars')
         .create({ defaultLayout:'main' });
-app.engine('handlebars', handlebars.engine);
-app.set('view engine', 'handlebars');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 
 var recipes = require('./lib/recipes.js');

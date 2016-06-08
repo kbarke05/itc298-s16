@@ -22,7 +22,8 @@
     "express": "^4.13.4",
     "handlebars": "^4.0.5",
     "mongoose": "4.4.17",
-    "mongodb-uri": "*"
+    "mongodb-uri": "*",
+    "ejs": "*"
   }
   "bugs": {
     "url": "https://github.com/kbarke05/itc298-s16/issues"
