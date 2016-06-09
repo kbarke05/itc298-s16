@@ -8,10 +8,13 @@
 
 //];
 
-var test = require("../../test_db.js");
+//var test = require("../../test_db.js");
+var Recipe = require("../models/model.js");
     
 exports.get = function(callback){
-     test.findRecipes(function(ourRecipes) {
+    console.log("get recipes");
+     Recipe.find(function(err, ourRecipes) {
+         console.log(ourRecipes);
           return callback(ourRecipes);    
      });
 }
@@ -50,6 +53,47 @@ exports.update = function(name, main, time, originalName, callback){
         return callback(updatedItem);  
      })
 }
+
+function findRecipes(callback) {
+    recipe.find({}, function(err, recipes) {
+        if (err) {
+            console.log(err);
+        }
+        return callback(recipes);
+    })
+}
+
+function findRecipe(name, callback) {
+    recipe.findOne({name:name}, function(err, ourRecipe) {
+        if (err) {
+            console.log(err);
+        }
+        return callback(ourRecipe);
+    })
+}
+
+function deleteRecipe(name, callback) {
+    recipe.findOneAndRemove({name:name}, function(err, ourRecipe) {
+        if (err) {
+            console.log(err);
+        }
+        return callback(ourRecipe);
+    })
+}
+
+function updateRecipe(name, main, time, originalName, callback) {
+    recipe.findOneAndUpdate({name:originalName}, {name:name, main:main, time:time}, function(err, ourRecipe) {
+        if (err) {
+            console.log(err);
+        }
+        return callback(ourRecipe);
+    })
+}
+
+module.exports.findRecipes = findRecipes;
+module.exports.findRecipe = findRecipe;
+module.exports.deleteRecipe = deleteRecipe;
+module.exports.updateRecipe = updateRecipe;
 
 
 

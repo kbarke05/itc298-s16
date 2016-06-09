@@ -15,19 +15,6 @@ app.listen(app.get('port'), function(){
     app.get('port') + '; press Ctrl-C to terminate.' );
 });
 
-var connection_string =  'mongodb://kristie:helloWorld@ds036069.mlab.com:36069/itc298recipes';
-
-var mongooseUri = require('mongodb-uri').formatMongoose(connection_string);
-
-mongoose.connect(mongooseUri); 
-var db = mongoose.connection;
-
-// stuff for the db
-app.use( function(req, res, next) {
-    req.db = db;
-    next();
-});
-
 
 // set up handlebars view engine
 var handlebars = require('express-handlebars')
